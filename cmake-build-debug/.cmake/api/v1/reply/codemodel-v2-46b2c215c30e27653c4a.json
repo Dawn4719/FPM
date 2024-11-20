@@ -1,0 +1,162 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3
+					],
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "graph",
+					"jsonFile" : "directory-graph-Debug-7116db9aed92aea6d3f1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "graph",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "matching",
+					"jsonFile" : "directory-matching-Debug-7b8b56c2fc95de5386d4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "matching",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				},
+				{
+					"build" : "utility",
+					"jsonFile" : "directory-utility-Debug-2eb7dd1ba56601e7e215.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "utility",
+					"targetIndexes" : 
+					[
+						6
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					],
+					"name" : "SubgraphMatching",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 2,
+					"id" : "EdgeListConverter.out::@006bf3aa7689e999730d",
+					"jsonFile" : "target-EdgeListConverter.out-Debug-e390b5978c66b30287e5.json",
+					"name" : "EdgeListConverter.out",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "GraphConverter.out::@006bf3aa7689e999730d",
+					"jsonFile" : "target-GraphConverter.out-Debug-6dfe4ab6527934bb74a9.json",
+					"name" : "GraphConverter.out",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "ReassignLabel::@006bf3aa7689e999730d",
+					"jsonFile" : "target-ReassignLabel-Debug-b075cf159cd57678de39.json",
+					"name" : "ReassignLabel",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "SelectEdge::@006bf3aa7689e999730d",
+					"jsonFile" : "target-SelectEdge-Debug-64757c553e8c29ba6ec4.json",
+					"name" : "SelectEdge",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "SubgraphMatching.out::@006bf3aa7689e999730d",
+					"jsonFile" : "target-SubgraphMatching.out-Debug-9739c877bf46ba03bfef.json",
+					"name" : "SubgraphMatching.out",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "graph::@24f0212b3bb5eb7e3fe6",
+					"jsonFile" : "target-graph-Debug-7f37550066a5b17f9b81.json",
+					"name" : "graph",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "utility::@23b027168f11ea0d609c",
+					"jsonFile" : "target-utility-Debug-2acec55c45255282bafa.json",
+					"name" : "utility",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/dbia/qsl/FINISHED/PSM/nm/cmake-build-debug",
+		"source" : "/home/dbia/qsl/FINISHED/PSM/nm"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

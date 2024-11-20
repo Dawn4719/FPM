@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="SubgraphMatching"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\graph\;CMake Files\matching\;CMake Files\utility\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="graph">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/graph/libgraph.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/graph"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/graph/Makefile&quot;  VERBOSE=1 graph"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/graph/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/graph/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/graph/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="graph/fast">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/graph/libgraph.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/graph"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/graph/Makefile&quot;  VERBOSE=1 graph/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/graph/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/graph/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/graph/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="SelectEdge">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/matching/SelectEdge" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/matching"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 SelectEdge"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="SelectEdge/fast">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/matching/SelectEdge" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/matching"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 SelectEdge/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ReassignLabel">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/matching/ReassignLabel" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/matching"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 ReassignLabel"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ReassignLabel/fast">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/matching/ReassignLabel" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/matching"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 ReassignLabel/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="EdgeListConverter.out">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/matching/EdgeListConverter.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/matching"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 EdgeListConverter.out"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="EdgeListConverter.out/fast">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/matching/EdgeListConverter.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/matching"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 EdgeListConverter.out/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="GraphConverter.out">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/matching/GraphConverter.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/matching"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 GraphConverter.out"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="GraphConverter.out/fast">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/matching/GraphConverter.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/matching"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 GraphConverter.out/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="SubgraphMatching.out">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/matching/SubgraphMatching.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/matching"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 SubgraphMatching.out"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="SubgraphMatching.out/fast">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/matching/SubgraphMatching.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/matching"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 SubgraphMatching.out/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/matching/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="utility">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/utility/libutility.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/utility"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/utility/Makefile&quot;  VERBOSE=1 utility"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/utility/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/utility/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/utility/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="utility/fast">
+				<Option output="/home/dbia/qsl/nm/cmake-build-remotedebug/utility/libutility.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dbia/qsl/nm/cmake-build-remotedebug/utility"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dbia/qsl/nm"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/utility/Makefile&quot;  VERBOSE=1 utility/fast"/>
+					<CompileFile command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/utility/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/utility/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j16 -f &quot;/home/dbia/qsl/nm/cmake-build-remotedebug/utility/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/dbia/qsl/nm/graph/graph.cpp">
+			<Option target="graph"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/graph/graph.h">
+			<Option target="graph"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/BuildTable.cpp">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/BuildTable.h">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/EdgeListToCSR.cpp">
+			<Option target="EdgeListConverter.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/EvaluateQuery.cpp">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/EvaluateQuery.h">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/FilterVertices.cpp">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/FilterVertices.h">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/GenerateFilteringPlan.cpp">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/GenerateFilteringPlan.h">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/GenerateQueryPlan.cpp">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/GenerateQueryPlan.h">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/GraphConverter.cpp">
+			<Option target="GraphConverter.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/ReassignLabel.cpp">
+			<Option target="ReassignLabel"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/SelectEdge.cpp">
+			<Option target="SelectEdge"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/StudyPerformance.cpp">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/matchingcommand.cpp">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/matchingcommand.h">
+			<Option target="SubgraphMatching.out"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/QFliter.h">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/bitsetoperation.cpp">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/bitsetoperation.h">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/commandparser.cpp">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/commandparser.h">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/computesetintersection.cpp">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/computesetintersection.h">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/graphoperations.cpp">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/graphoperations.h">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/han/intersection_algos.cpp">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/han/intersection_algos.hpp">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/han/utils/util.cpp">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/han/utils/util.hpp">
+			<Option target="utility"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/graph/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\graph\"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/matching/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\matching\"/>
+		</Unit>
+		<Unit filename="/home/dbia/qsl/nm/utility/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\utility\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

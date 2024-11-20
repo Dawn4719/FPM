@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -O3 -ffast-math -g -Wall -march=native -pthread -g  -rdynamic CMakeFiles/GraphConverter.out.dir/GraphConverter.cpp.o  -o GraphConverter.out  -Wl,-rpath,/home/dbia/qsl/nm/cmake-build-remotedebug/graph:/home/dbia/qsl/nm/cmake-build-remotedebug/utility ../graph/libgraph.so ../utility/libutility.so 

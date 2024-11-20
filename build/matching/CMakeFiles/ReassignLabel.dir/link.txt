@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++17 -O3 -ffast-math -g -Wall -march=native -pthread  -rdynamic CMakeFiles/ReassignLabel.dir/ReassignLabel.cpp.o  -o ReassignLabel 

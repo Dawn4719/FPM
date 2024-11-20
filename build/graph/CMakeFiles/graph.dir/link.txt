@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC  -std=c++17 -O3 -ffast-math -g -Wall -march=native -pthread  -shared -Wl,-soname,libgraph.so -o libgraph.so CMakeFiles/graph.dir/graph.cpp.o 

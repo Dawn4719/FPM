@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../configuration/config.h
+
+../configuration/types.h
+cstdint
+-
+stdlib.h
+-
+unordered_map
+-
+malloc.h
+-
+
+../graph/graph.h
+unordered_map
+-
+iostream
+-
+cmath
+-
+configuration/types.h
+../graph/configuration/types.h
+configuration/config.h
+../graph/configuration/config.h
+
+/home/dbia/qsl/FINISHED/PSM/nm/matching/GraphConverter.cpp
+graph/graph.h
+/home/dbia/qsl/FINISHED/PSM/nm/matching/graph/graph.h
+
