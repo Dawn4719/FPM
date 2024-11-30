@@ -66,11 +66,9 @@ vector<vector<int>> all_match_res;
 mutex mtx;
 mutex mtx_in_match;
 mutex mtx2;
-vector<bool> thread_state;
-int all_match_idx;
-vector<vector<int>> thread2idx;
+mutex mtx3;
 
-int top = 3e6;
+int top = 0x3f3f3f3f;
 vector<pair<int, int>> new_idx;
 size_t la;
 map<string, size_t> get_index_mem() {
@@ -98,6 +96,7 @@ map<string, size_t> get_index_mem() {
     fclose(fp);
     return res;
 }
+vector<pair<int, int>> to_match_idx;
 size_t max_size{}, max_cal_size{};
 class Worker {
 public:
@@ -121,7 +120,7 @@ public:
     int cur_sp_match_res;
 
     vector<vector<int>> match_result;
-    vector<pair<int, vector<pair<int, vector<int>>>>> get_nei_label_vertex;
+    map<int, vector<pair<int, vector<int>>>> get_nei_label_vertex;
 
     struct Node {
         vector<int> match;
@@ -266,9 +265,9 @@ public:
                 if (pst[v] == dd + 1) {
                     // cout << u << " " << v << endl;
                     path.emplace_back(u, (int)v);
-                    if (u == 1917)
-                        if (pst2[u] == 0) pst2[u] = pst2[v] + 1;
-                        else pst2[u] = min(pst2[u], pst2[v] + 1);
+//                    if (u == 1917)
+                    if (pst2[u] == 0) pst2[u] = pst2[v] + 1;
+                    else pst2[u] = min(pst2[u], pst2[v] + 1);
                     this_edge = true;
                     continue;
                 }
@@ -309,8 +308,7 @@ public:
     }
     bool add(int vertex, size_t lower_) {
         fstream fss = fstream("/home/dbia/qsl/FINISHED/PSM/" + PATH +"D" + to_string(D) + "/" + to_string(vertex) + ".txt");
-        pair<int, vector<pair<int, vector<int>>>> nodes;
-        nodes.first = vertex;
+        vector<pair<int, vector<int>>> nodes;
         vertex = -1;
         string line;
         while (fss >> vertex) {
@@ -323,18 +321,18 @@ public:
                         break;
                 continue;
             }
-            nodes.second.resize(nodes.second.size() + 1);
-            nodes.second.back().first = lab_;
-            nodes.second.back().second.reserve(num_);
+            nodes.resize(nodes.size() + 1);
+            nodes.back().first = lab_;
+            nodes.back().second.reserve(num_);
             for (int i = 0; i < num_; ++i) {
                 fss >> x;
-                nodes.second.back().second.emplace_back(x);
+                nodes.back().second.emplace_back(x);
             }
             fss >> vertex;
         }
         fss.close();
-        if (!nodes.second.empty()) {
-            get_nei_label_vertex.insert(get_nei_label_vertex.begin() + lower_, nodes);
+        if (!nodes.empty()) {
+            get_nei_label_vertex[lower_] = std::move(nodes);
             return true;
         }
         return false;
@@ -365,16 +363,12 @@ public:
                 }
             }
             unq[sum].emplace_back(tmp);
-//        mtx.lock();
+            mtx.lock();
+            sp_match_res++;
+//            cout << sp_match_res << endl;
+            mtx.unlock();
             cur_sp_match_res++;
-//             cout << Worker_idx << " " << cur_sp_match_res << endl;
-//        mtx.unlock();
-
-            if (cur_sp_match_res >= top) {
-                // cout << "topk break" << endl;
-                // mtx.lock();
-                // cout << Worker_idx << " " << cur_sp_match_res << endl;
-                // mtx.unlock();
+            if (sp_match_res >= 3000000) {
                 topk = true;
             }
 
@@ -395,10 +389,10 @@ public:
 //            fs << endl;
 //            fs.close();
 
-            res_graph.clear();
+//            res_graph.clear();
             // memset(pst, 0, 4 * data_graph->vertices_count_);
             // memset(pst2, 0, 4 * data_graph->vertices_count_);
-            map<int, bool> has_used;
+//            map<int, bool> has_used;
 
             // for (auto i : now) {
             //     for (auto v : N[i.first].n[i.second].match) {
@@ -421,10 +415,9 @@ public:
 //            for (const auto& v : Path.back()) {pst[v.first] = 0, pst[v.second] = 0, pst2[v.first] = 0, pst2[v.second] = 0;}
 //            Path.pop_back();
             // }
-            auto eeend = std::chrono::high_resolution_clock::now();
-            auto timmm = std::chrono::duration_cast<std::chrono::nanoseconds>(eeend - sstart).count();
-            if (cur_sp_match_res % 1000 == 0) {
-                cout << cur_sp_match_res << " " << NC(timmm) << " " << endl;
+//            auto eeend/std::chrono::duration_cast<std::chrono::nanoseconds>(eeend - sstart).count();
+            if (sp_match_res % 1000 == 0) {
+                cout << sp_match_res << endl;
             }
 
             return;
@@ -435,11 +428,10 @@ public:
                     if (qim[j.first]) continue;
                     for (auto k : j.second) {
                         if (!Nst[i.first][i.second][j.first][k]) {
-                            // dbg_cnt++;
-                            // cout << dbg_cnt << endl;
-                            // if (dbg_cnt == 26395)
-                            //     cout << endl;
-                            // assert(Nst[1][39][2].size() == 8272);
+//                            if (sp_match_res >= 3000000) {
+//                                topk = true;
+//                                return;
+//                            }
                             qim[j.first] = true;
                             now.emplace_back(j.first, k);
                             if (QUERY_NUMS >= 4 && now.size() == QUERY_NUMS - 1)
@@ -448,14 +440,23 @@ public:
                             auto ii = now.back();
                             for (auto v : N[ii.first].n[ii.second].match) if (pst[v] >= 0) pst[v] = -ii.first - 1;
                             vector<pair<int, int>> pa;
-                            for (auto v : N[ii.first].n[ii.second].match)
+                            for (auto v : N[ii.first].n[ii.second].match) {
+//                                if (sp_match_res >= 3000000) {
+//                                    topk = true;
+//                                    return;
+//                                }
                                 get_path3D(data_graph, ii.first + 1, v, -1, 0, pa);
+                            }
 
                             Path.emplace_back(pa);
 
                             // cout << "1 " << now.size() << " " << Path.size() << endl;
                             // assert(Path.size() + 1 == now.size());
                             extd(data_graph);
+//                            if (sp_match_res >= 3000000) {
+//                                topk = true;
+//                                return;
+//                            }
                             Nst[i.first][i.second][j.first][k] = false;
                             if (topk) return;
                             qim[j.first] = false;
@@ -479,21 +480,26 @@ public:
     bool dfs(Graph* data_graph, pair<int, int> u, int cnt) {
         if (topk) return true;
         if (cnt >= QUERY_NUMS) return true;
-        for (auto i : tree[u.first][u.second]) {
+        for (const auto& i : tree[u.first][u.second]) {
+//            cout << cnt << endl;
             if (qim[i.first]) continue;
             for (auto j : i.second) {
-                // dbg_cnt++;
-                // if (dbg_cnt == 169023)
-                //     cout << endl;
-                // cout << dbg_cnt << endl;
-                // assert(Nst[1][39][2].size() == 8272);
+//                if (sp_match_res >= 3000000) {
+//                    topk = true;
+//                    return true;
+//                }
                 now.emplace_back(i.first, j);
 
                 auto ii = now.back();
                 for (auto v : N[ii.first].n[ii.second].match) if (pst[v] >= 0) pst[v] = -ii.first - 1;
                 vector<pair<int, int>> pa;
-                for (auto v : N[ii.first].n[ii.second].match)
+                for (auto v : N[ii.first].n[ii.second].match) {
+//                    if (sp_match_res >= 3000000) {
+//                        topk = true;
+//                        return true;
+//                    }
                     get_path3D(data_graph, ii.first + 1, v, -1, 0, pa);
+                }
                 Path.emplace_back(pa);
 
                 // cout << "3 " << now.size() << " " << Path.size() << endl;
@@ -501,11 +507,15 @@ public:
                 if (i.first < tree.size() && !dfs(data_graph, {i.first, j}, cnt+1))
                     return false;
                 if (topk) return true;
-                // assert(Nst[1][39][2].size() > 0);
+
                 Nst[u.first][u.second][i.first][j] = true;
 
                 n_st.clear();
                 extd(data_graph);
+//                if (sp_match_res >= 3000000) {
+//                    topk = true;
+//                    return true;
+//                }
                 if (topk) return true;
                 qim[i.first] = false;
                 now.pop_back();
@@ -615,7 +625,7 @@ public:
          delete[] EvaluateQuery::distribution_count_;
 #endif
     }
-    map<int, map<int, size_t>> epoch_cnt;
+//    map<int, map<int, size_t>> epoch_cnt;
     void begin_extend(Graph* data_graph, Graph** query_graph, int match_idx) {
         auto each_begin1 = std::chrono::high_resolution_clock::now();
 //        cout<< 'bb' << endl;
@@ -631,12 +641,11 @@ public:
         qim.clear();
         Nst.clear();
         tree.clear();
-        epoch_cnt.clear();
+//        epoch_cnt.clear();
         match_num.resize(QUERY_NUMS);
         match_num[0] = 1;
         N.resize(QUERY_NUMS);
         space_cnt = 0;
-
         size_t sum = 0;
         // eg2id.resize(QUERY_NUMS);
         for (auto i : all_match_res[match_idx]) sum += i;
@@ -646,42 +655,31 @@ public:
         N[0].sum2idx[sum].emplace_back(0);
         bool enough_break = false;
         size_t bound = 1;
-        for (int epoch = 0; epoch < QUERY_NUMS - 1; ++epoch) {
-//            cout << "N size" << endl;
-//            for (int j = 0; j < QUERY_NUMS; ++j) {
-//                cout << "j: " << N[j].n.size() << endl;
-//            }
+        for (int epoch = 0; epoch < 1; ++epoch) {
             for (int j = 0; j < QUERY_NUMS; ++j) {
-                // cout << epoch << " " << j << " N size" << endl;
-                // if (epoch == 1) {
-                //     cout << "thread: " << Worker_idx << endl;
-                //     for (int jj = 0; jj < QUERY_NUMS; ++jj) {
-                //         cout << "i: " << N[jj].n.size() << endl;
-                //     }
-                // }
                 tree[j].resize(N[j].n.size());
                 for (int n_j = 0; n_j < N[j].n.size(); ++n_j) {
-                    if (top != 0x3f3f3f3f && epoch == 0) {
-                        size_t ubt = 1;
-                        for (int j_ = 0; j_ < QUERY_NUMS; ++j_) {
-                            ubt *= N[j_].n.size();
-                        }
-                        if (ubt >= top) {
-                            enough_break = true;
-                            // cout << "break bound: " << ubt << endl;
-                            break;
-                        }
-                    }
+//                    if (top != 0x3f3f3f3f && epoch == 0) {
+//                        size_t ubt = 1;
+//                        for (int j_ = 0; j_ < QUERY_NUMS; ++j_) {
+//                            ubt *= N[j_].n.size();
+//                        }
+//                        if (ubt >= top) {
+//                            enough_break = true;
+//                            // cout << "break bound: " << ubt << endl;
+//                            break;
+//                        }
+//                    }
                     auto& n = N[j].n[n_j];
                     if (n.step == epoch) {
                         if (!n.flag && n.step < QUERY_NUMS - 1) {
                             for (auto match_vertex : n.match) {
-                                auto lower_ = LB2(get_nei_label_vertex, match_vertex);
-                                if (lower_ >= get_nei_label_vertex.size() || get_nei_label_vertex[lower_].first != match_vertex) {
-                                    if (!add(match_vertex, lower_))
+//                            auto lower_ = LB2(get_nei_label_vertex, match_vertex);
+                                if (get_nei_label_vertex[match_vertex].empty()) {
+                                    if (!add(match_vertex, match_vertex))
                                         continue;
                                 }
-                                auto lab_ver = get_nei_label_vertex[lower_].second;
+                                auto lab_ver = get_nei_label_vertex[match_vertex];
                                 for (int i = 1; i < QUERY_NUMS; ++i) {
                                     if (i == j) continue;
                                     for (auto LB_ : query_graph[i]->all_labs) {
@@ -692,34 +690,33 @@ public:
                                         auto lower = LB(lab_ver, lb);
                                         if (lower < lab_ver.size() && lab_ver[lower].first == lb) {
                                             for (auto vertex : lab_ver[lower].second) {
-                                                if (bound >= top) {
-                                                    enough_break = true;
-                                                    break;
-                                                }
-                                                if (epoch_cnt[1][i] * epoch_cnt[1][j] > top) continue;
+//                                                if (bound >= top) {
+//                                                    enough_break = true;
+//                                                    break;
+//                                                }
+//                                                if (epoch_cnt[1][i] * epoch_cnt[1][j] > top) continue;
+//
+//                                                size_t sm = 1;
+//                                                for (int ii_ = 1; ii_ < QUERY_NUMS; ++ii_) {
+//                                                    if (epoch_cnt[1][ii_]) {
+//                                                        sm *= epoch_cnt[1][ii_];
+//                                                    }
+//                                                }
+//                                                if (sm >= top && epoch_cnt[1][i]) {
+//                                                    break;
+//                                                }
 
-                                                size_t sm = 1;
-                                                for (int ii_ = 1; ii_ < QUERY_NUMS; ++ii_) {
-                                                    if (epoch_cnt[1][ii_]) {
-                                                        sm *= epoch_cnt[1][ii_];
-                                                    }
-                                                }
-                                                if (sm >= top && epoch_cnt[1][i]) {
-                                                    break;
-                                                }
-                                                // cout << sm << " " << epoch_cnt[1][i] << endl;
-                                                // if (!epoch) for (int p_p = 1; p_p < QUERY_NUMS; p_p++) cout << N[p_p].n.size() << " \n"[p_p + 1 == QUERY_NUMS];
-                                                if (top != 0x3f3f3f3f && epoch == 0) {
-                                                    size_t ubt = 1;
-                                                    for (int j_ = 0; j_ < QUERY_NUMS; ++j_) {
-                                                        ubt *= N[j_].n.size();
-                                                    }
-                                                    if (ubt >= top) {
-                                                        enough_break = true;
-                                                        // cout << "break bound: " << ubt << endl;
-                                                        break;
-                                                    }
-                                                }
+//                                                if (top != 0x3f3f3f3f && epoch == 0) {
+//                                                    size_t ubt = 1;
+//                                                    for (int j_ = 0; j_ < QUERY_NUMS; ++j_) {
+//                                                        ubt *= N[j_].n.size();
+//                                                    }
+//                                                    if (ubt >= top) {
+//                                                        enough_break = true;
+//                                                        // cout << "break bound: " << ubt << endl;
+//                                                        break;
+//                                                    }
+//                                                }
                                                 if (N[i].has_extend.find(vertex) != N[i].has_extend.end()) {
                                                     if (!N[i].has_extend[vertex].empty()) {
                                                         // add_edge
@@ -731,37 +728,37 @@ public:
                                                                 if (lb_ == tree[j][n_j][i].end() || *lb_ != n_i) {
 //                                                                    tree[j][n_j][i].first = i;
                                                                     tree[j][n_j][i].insert(lb_, n_i);
-                                                                    if (top != 0x3f3f3f3f) {
-                                                                        if (epoch == 0) {
-                                                                            size_t ubt = 1;
-                                                                            for (int j = 0; j < QUERY_NUMS; ++j) {
-                                                                                ubt *= N[j].n.size();
-                                                                                // cout << j << " " << N[j].n.size() << endl;
-                                                                            }
-                                                                            if (ubt >= top) {
-                                                                                enough_break = true;
-                                                                                cout << "break bound: " << ubt << endl;
-                                                                                break;
-                                                                            }
-                                                                        }
-                                                                        else {
-                                                                            map<int, bool> st_;
-                                                                            bound++;
-                                                                            st_[j] = true;
-                                                                            st_[i] = true;
-                                                                            for (int qi_ = 1; qi_ < QUERY_NUMS; ++qi_) {
-                                                                                if (!st_[qi_]) {
-                                                                                    bound += tree[j][n_j][qi_].size();
-                                                                                }
-                                                                                if (bound >= top) {
-                                                                                    // cout << "break 0 epoch: " << epoch << endl;
-                                                                                    enough_break = true;
-                                                                                    break;
-                                                                                }if (enough_break) break;
-                                                                            }
-                                                                        }
-                                                                        if (enough_break) break;
-                                                                    }if (enough_break) break;
+//                                                                    if (top != 0x3f3f3f3f) {
+//                                                                        if (epoch == 0) {
+//                                                                            size_t ubt = 1;
+//                                                                            for (int jj = 0; jj < QUERY_NUMS; ++jj) {
+//                                                                                ubt *= N[jj].n.size();
+//                                                                                // cout << j << " " << N[j].n.size() << endl;
+//                                                                            }
+//                                                                            if (ubt >= top) {
+//                                                                                enough_break = true;
+//                                                                                cout << "break bound 718: " << ubt << " " << Worker_idx << endl;
+//                                                                                break;
+//                                                                            }
+//                                                                        }
+//                                                                        else {
+//                                                                            map<int, bool> st_;
+//                                                                            bound++;
+//                                                                            st_[j] = true;
+//                                                                            st_[i] = true;
+//                                                                            for (int qi_ = 1; qi_ < QUERY_NUMS; ++qi_) {
+//                                                                                if (!st_[qi_]) {
+//                                                                                    bound += tree[j][n_j][qi_].size();
+//                                                                                }
+//                                                                                if (bound >= top) {
+//                                                                                    // cout << "break 0 epoch: " << epoch << endl;
+//                                                                                    enough_break = true;
+//                                                                                    break;
+//                                                                                }if (enough_break) break;
+//                                                                            }
+//                                                                        }
+//                                                                        if (enough_break) break;
+//                                                                    }if (enough_break) break;
                                                                     match_num[i]++;
                                                                 }if (enough_break) break;
                                                             }if (enough_break) break;
@@ -791,7 +788,7 @@ public:
                                                             a.match = each_res;
                                                             a.step = N[j].n[n_j].step + 1;
                                                             N[i].n.emplace_back(a);
-                                                            epoch_cnt[a.step][i]++;
+//                                                            epoch_cnt[a.step][i]++;
                                                             match_num[i]++;
                                                             map<int, vector<int>> tmp;
                                                             tmp[j].emplace_back(n_j);
@@ -803,59 +800,38 @@ public:
                                                             tree[j][n_j][i].emplace_back(N[i].n.size() - 1);
                                                             N[i].has_extend[vertex].emplace_back(N[i].n.size() - 1);
 
-                                                            // if (n_j >= eg2id[j].size()) {
-                                                            //     eg2id[j].resize(n_j + 1);
-                                                            // }
-                                                            // if (N[i].n.size() - 1 >= eg2id[i].size()) eg2id[i].resize(N[i].n.size() - 1 + 1);
-                                                            // if (eg2id[j][n_j] == 0) {
-                                                            //     lab[space_cnt] = j;
-                                                            //     eg2id[j][n_j] = space_cnt++;
-                                                            // }
-                                                            // if (eg2id[i][N[i].n.size() - 1] == 0) {
-                                                            //     lab[space_cnt] = i;
-                                                            //     eg2id[i][N[i].n.size() - 1] = space_cnt++;
-                                                            // }
-                                                            // if (eg2id[j].find(n_j) == eg2id[j].end()) {
-                                                            //     lab[space_cnt] = j;
-                                                            //     eg2id[j][n_j] = space_cnt++;
-                                                            // }
-                                                            // if (eg2id[i].find(N[i].n.size() - 1) == eg2id[i].end()) {
-                                                            //     lab[space_cnt] = i;
-                                                            //     eg2id[i][N[i].n.size() - 1] = space_cnt++;
-                                                            // }
-                                                            map<int, bool> st_;
-                                                            st_[i] = true;
-                                                            st_[j] = true;
-                                                            bound++;
-                                                            if (top != 0x3f3f3f3f) {
-                                                                if(epoch == 0) {
-                                                                    size_t ubt = 1;
-                                                                    for (int j = 0; j < QUERY_NUMS; ++j) {
-                                                                        ubt *= N[j].n.size();
-                                                                        // cout << j << " " << N[j].n.size() << endl;
-                                                                    }
-                                                                    if (ubt >= top) {
-                                                                        enough_break = true;
-                                                                        cout << "break bound: " << ubt << endl;
-                                                                        break;
-                                                                    }
-                                                                }
-                                                                else{
-                                                                    for (int qi_ = 1; qi_ < QUERY_NUMS; ++qi_) {
-                                                                        if (!st_[qi_]) {
-                                                                            bound += epoch_cnt[1][qi_];
-                                                                            bound += tree[j][n_j][qi_].size();
-                                                                        }
-                                                                        if (bound >= top) {
-                                                                            // cout << "break 1 epoch: " << epoch << endl;
-                                                                            enough_break = true;
-                                                                            break;
-                                                                        }
-                                                                    }
-                                                                }
-                                                                if (enough_break) break;
-                                                            }
-                                                            if (enough_break) break;
+//                                                            map<int, bool> st_;
+//                                                            st_[i] = true;
+//                                                            st_[j] = true;
+//                                                            bound++;
+//                                                            if (top != 0x3f3f3f3f) {
+//                                                                if(epoch == 0) {
+//                                                                    size_t ubt = 1;
+//                                                                    for (int jj = 0; jj < QUERY_NUMS; ++jj) {
+//                                                                        ubt *= N[jj].n.size();
+//                                                                    }
+//                                                                    if (ubt >= top) {
+//                                                                        enough_break = true;
+//                                                                        cout << "break bound 814: " << ubt << " " << Worker_idx << endl;
+//                                                                        break;
+//                                                                    }
+//                                                                }
+//                                                                else{
+//                                                                    for (int qi_ = 1; qi_ < QUERY_NUMS; ++qi_) {
+//                                                                        if (!st_[qi_]) {
+//                                                                            bound += epoch_cnt[1][qi_];
+//                                                                            bound += tree[j][n_j][qi_].size();
+//                                                                        }
+//                                                                        if (bound >= top) {
+//                                                                            // cout << "break 1 epoch: " << epoch << endl;
+//                                                                            enough_break = true;
+//                                                                            break;
+//                                                                        }
+//                                                                    }
+//                                                                }
+//                                                                if (enough_break) break;
+//                                                            }
+//                                                            if (enough_break) break;
                                                         }
                                                         else {
                                                             bool f = true;
@@ -896,7 +872,7 @@ public:
 //                                                                        tree[j][n_j][tree_resize_idx].first = tree_resize_idx;
 //                                                                }
                                                                 tree[j][n_j][i].emplace_back(N[i].n.size() - 1);
-                                                                epoch_cnt[a.step][i]++;
+//                                                                epoch_cnt[a.step][i]++;
                                                                 N[i].has_extend[vertex].emplace_back(N[i].n.size() - 1);
                                                                 // if (n_j >= eg2id[j].size()) eg2id[j].resize(n_j + 1);
                                                                 // if (N[i].n.size() - 1 >= eg2id[i].size()) eg2id[i].resize(N[i].n.size() - 1 + 1);
@@ -916,38 +892,38 @@ public:
                                                                 //     lab[space_cnt] = i;
                                                                 //     eg2id[i][N[i].n.size() - 1] = space_cnt++;
                                                                 // }
-                                                                bound++;
-                                                                map<int, bool> st_;
-                                                                st_[i] = true;
-                                                                st_[j] = true;
-                                                                if (top != 0x3f3f3f3f) {
-                                                                    if(epoch == 0) {
-                                                                        size_t ubt = 1;
-                                                                        for (int j = 0; j < QUERY_NUMS; ++j) {
-                                                                            ubt *= N[j].n.size();
-                                                                            // cout << j << " " << N[j].n.size() << endl;
-                                                                        }
-                                                                        if (ubt >= top) {
-                                                                            enough_break = true;
-                                                                            cout << "break bound: " << ubt << endl;
-                                                                            break;
-                                                                        }
-                                                                    }
-                                                                    else {
-                                                                        for (int qi_ = 1; qi_ < QUERY_NUMS; ++qi_) {
-                                                                            if (!st_[qi_]) {
-                                                                                bound += epoch_cnt[1][qi_];
-                                                                                bound += tree[j][n_j][qi_].size();
-                                                                            }
-                                                                            if (bound >= top) {
-                                                                                // cout << "break 2 epoch: " << epoch << endl;
-                                                                                enough_break = true;
-                                                                                break;
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    if (enough_break) break;
-                                                                }
+//                                                                bound++;
+//                                                                map<int, bool> st_;
+//                                                                st_[i] = true;
+//                                                                st_[j] = true;
+//                                                                if (top != 0x3f3f3f3f) {
+//                                                                    if(epoch == 0) {
+//                                                                        size_t ubt = 1;
+//                                                                        for (int jj = 0; jj < QUERY_NUMS; ++jj) {
+//                                                                            ubt *= N[jj].n.size();
+//                                                                            // cout << j << " " << N[j].n.size() << endl;
+//                                                                        }
+//                                                                        if (ubt >= top) {
+//                                                                            enough_break = true;
+//                                                                            cout << "break bound 907: " << ubt << " " << Worker_idx << endl;
+//                                                                            break;
+//                                                                        }
+//                                                                    }
+//                                                                    else {
+//                                                                        for (int qi_ = 1; qi_ < QUERY_NUMS; ++qi_) {
+//                                                                            if (!st_[qi_]) {
+//                                                                                bound += epoch_cnt[1][qi_];
+//                                                                                bound += tree[j][n_j][qi_].size();
+//                                                                            }
+//                                                                            if (bound >= top) {
+//                                                                                // cout << "break 2 epoch: " << epoch << endl;
+//                                                                                enough_break = true;
+//                                                                                break;
+//                                                                            }
+//                                                                        }
+//                                                                    }
+//                                                                    if (enough_break) break;
+//                                                                }
                                                             }
                                                             else {
                                                                 if (n.step < N[i].n[n_i].step) {
@@ -963,25 +939,23 @@ public:
                                                                         //                                                                    g.emplace_back(j, n_j, i, n_i);
                                                                         //                                                                     if (!N[i].has_extend[vertex].empty() && N[i].has_extend[vertex][0] == n_j) continue;
                                                                         N[i].has_extend[vertex].emplace_back(n_i);
-                                                                        map<int, bool> st_;
-                                                                        bound++;
-                                                                        st_[j] = true;
-                                                                        st_[i] = true;
-                                                                        for (int qi_ = 1; qi_ < QUERY_NUMS; ++qi_) {
-                                                                            if (!st_[qi_]){
-                                                                                bound += tree[j][n_j][qi_].size();
-                                                                            }
-                                                                            if (bound >= top) {
-                                                                                // cout << "break 3 epoch: " << epoch << endl;
-                                                                                enough_break = true;
-                                                                                break;
-                                                                            }
-                                                                        }
-                                                                        if (enough_break) break;
+//                                                                        map<int, bool> st_;
+//                                                                        bound++;
+//                                                                        st_[j] = true;
+//                                                                        st_[i] = true;
+//                                                                        for (int qi_ = 1; qi_ < QUERY_NUMS; ++qi_) {
+//                                                                            if (!st_[qi_]){
+//                                                                                bound += tree[j][n_j][qi_].size();
+//                                                                            }
+//                                                                            if (bound >= top) {
+//                                                                                // cout << "break 3 epoch: " << epoch << endl;
+//                                                                                enough_break = true;
+//                                                                                break;
+//                                                                            }
+//                                                                        }
+//                                                                        if (enough_break) break;
                                                                     }
                                                                     if (enough_break) break;
-                                                                    //                                                                 if (N[i].has_extend[vertex].empty())
-                                                                    //                                                                 N[i].has_extend[vertex].emplace_back(n_j);
                                                                 }
                                                                 if (enough_break) break;
                                                             }
@@ -992,8 +966,6 @@ public:
                                                     if (enough_break) break;
                                                 }
                                                 if (enough_break) break;
-                                                //                                             if (N[i].has_extend[vertex].empty())
-                                                //                                                 N[i].has_extend.erase(vertex);
                                             }
                                             if (enough_break) break;
                                         }
@@ -1012,34 +984,37 @@ public:
                 }
                 if (enough_break) break;
             }
-            if (top != 0x3f3f3f3f && epoch == 0) {
-                size_t ubt = 1;
-                for (int j = 0; j < QUERY_NUMS; ++j) {
-                    ubt *= N[j].n.size();
-                    // cout << j << " " << N[j].n.size() << endl;
-                }
-                if (ubt >= top) {
-                    enough_break = true;
-                    cout << "break bound: " << ubt << endl;
-                    break;
-                }
-            }
-            if (enough_break) break;
-            if (epoch == 0) {
-                bound = 1;
-                for (int j = 1; j < QUERY_NUMS; ++j) {
-                    bound *= N[j].n.size();
-                }
-            }
+//            if (enough_break) break;
+//            if (top != 0x3f3f3f3f && epoch == 0) {
+//                size_t ubt = 1;
+//                for (int j = 0; j < QUERY_NUMS; ++j) {
+//                    ubt *= N[j].n.size();
+//                    // cout << j << " " << N[j].n.size() << endl;
+//                }
+//                if (ubt >= top) {
+//                    enough_break = true;
+//                    cout << "break bound 998: " << ubt << " " << Worker_idx << endl;
+//                    break;
+//                }
+//            }
+//            if (enough_break) break;
+//            if (epoch == 0) {
+//                bound = 1;
+//                for (int j = 1; j < QUERY_NUMS; ++j) {
+//                    bound *= N[j].n.size();
+//                }
+//            }
         }
 
-        // cout << "enough_break: " << enough_break << endl;
+//        cout << "build over: " << Worker_idx << endl;
         auto each_end1 = std::chrono::high_resolution_clock::now();
-        tim1 += std::chrono::duration_cast<std::chrono::nanoseconds>(each_end1 - each_begin1).count();
+        mtx2.lock();
+        tim1 = max(tim1, (double)std::chrono::duration_cast<std::chrono::nanoseconds>(each_end1 - each_begin1).count());
+//        cout << "Worker_idx: " << Worker_idx << " idx_time: " << NC(std::chrono::duration_cast<std::chrono::nanoseconds>(each_end1 - each_begin1).count()) << endl;
+        mtx2.unlock();
 //    this_time += std::chrono::duration_cast<std::chrono::nanoseconds>(each_end1 - each_begin1).count();
         // cout << "build time: " << NC(std::chrono::duration_cast<std::chrono::nanoseconds>(each_end1 - each_begin1).count()) << endl;
         //    g.clear();
-        auto ti = std::chrono::duration_cast<std::chrono::nanoseconds>(each_end1 - sstart).count();
         //    cout << NC(ti) << "s" << endl;
         for (auto & i : N) {
             if (i.n.empty())
@@ -1050,39 +1025,39 @@ public:
 //         for (int j = 0; j < QUERY_NUMS; ++j) {
 //             cout << "j: " << N[j].n.size() << endl;
 //         }
-        if (thread_num == 1) {
-            auto new_la = get_index_mem()["pk"];
-            if (new_la > la) {
-                size_t all_cnt = tree.size();
-                for (auto i : tree) {
-                    all_cnt += i.second.size();
-                    for (auto j : i.second) {
-                        all_cnt += j.size();
-                        for (auto l : j) {
-                            all_cnt += l.second.size();
-                        }
-                    }
-                }
-                all_cnt *= 4;
-                for (auto & i : N) {
-                    for (const auto& j : i.n) {
-                        all_cnt += 4 * j.match.size();
-                        all_cnt += 8;
-                    }
-                    for (const auto& j : i.has_extend) {
-                        all_cnt += sizeof(int);
-                        all_cnt += sizeof(int) * j.second.size();
-                        all_cnt += 3 * sizeof(void*) + sizeof(char);
-                    }
-                    for (const auto& j : i.sum2idx) {
-                        all_cnt += sizeof(int);
-                        all_cnt += sizeof(int) * j.second.size();
-                        all_cnt += 3 * sizeof(void*) + sizeof(char);
-                    }
-                }
-                max_cal_size = all_cnt;
-            }
-        }
+//        if (thread_num == 1) {
+//            auto new_la = get_index_mem()["pk"];
+//            if (new_la > la) {
+//                size_t all_cnt = tree.size();
+//                for (auto i : tree) {
+//                    all_cnt += i.second.size();
+//                    for (auto j : i.second) {
+//                        all_cnt += j.size();
+//                        for (auto l : j) {
+//                            all_cnt += l.second.size();
+//                        }
+//                    }
+//                }
+//                all_cnt *= 4;
+//                for (auto & i : N) {
+//                    for (const auto& j : i.n) {
+//                        all_cnt += 4 * j.match.size();
+//                        all_cnt += 8;
+//                    }
+//                    for (const auto& j : i.has_extend) {
+//                        all_cnt += sizeof(int);
+//                        all_cnt += sizeof(int) * j.second.size();
+//                        all_cnt += 3 * sizeof(void*) + sizeof(char);
+//                    }
+//                    for (const auto& j : i.sum2idx) {
+//                        all_cnt += sizeof(int);
+//                        all_cnt += sizeof(int) * j.second.size();
+//                        all_cnt += 3 * sizeof(void*) + sizeof(char);
+//                    }
+//                }
+//                max_cal_size = all_cnt;
+//            }
+//        }
 
 //    for (auto& i : tree) {
 //        for (auto& j : i.second) {
@@ -1125,37 +1100,24 @@ public:
         dfs(data_graph, {0, 0}, 1);
         // cout << "------------ finish extd ------------" << endl;
         auto each_end2 = std::chrono::high_resolution_clock::now();
-        tim2 += std::chrono::duration_cast<std::chrono::nanoseconds>(each_end2 - each_begin2).count();
-//        mtx2.lock();
-        // top -= cur_sp_match_res;
-//        mtx2.unlock();
+        mtx3.lock();
+        tim2 = max(tim2, (double)std::chrono::duration_cast<std::chrono::nanoseconds>(each_end2 - each_begin2).count());
+//        cout << "Work_idx: " << Worker_idx << " graph time: " << NC(std::chrono::duration_cast<std::chrono::nanoseconds>(each_end2 - each_begin2).count()) << "ms " << cur_sp_match_res << endl;
+        mtx3.unlock();
+
         Path.clear();
         if (topk) return;
     }
     void Excute(double total_time_in_ns, Graph** query_graph, Graph* data_graph) {
-//        for (; all_match_idx < all_match_res.size(); ) {
         for (int i = Worker_idx; i < all_match_res.size(); i += thread_num) {
-            nei_all_size = 0;
-            get_nei_label_vertex.clear();
+//            get_nei_label_vertex.clear();
 
-//            mtx_in_match.lock();
-////            match_result.clear();
-////            match_result.emplace_back(all_match_res[all_match_idx]);
-//            all_match_idx++;
-//            if (all_match_idx >= all_match_res.size()) break;
-//            mtx_in_match.unlock();
-
-//            thread2idx[Worker_idx].emplace_back(all_match_idx);
-//             cout << "Worker_idx: " << Worker_idx << " " << i << endl;
+            cout << "Worker_idx: " << Worker_idx << " " << i << endl;
 
             topk = false;
-//            cout << all_match_idx << endl;
-            begin_extend(data_graph, query_graph, i);
+            begin_extend(data_graph, query_graph, to_match_idx[i].second);
             if (topk) break;
         }
-//        delete []pst;
-//        delete []pst2;
-//        delete []query_is_matched;
     }
 };
 vector<double> times;
@@ -1163,61 +1125,16 @@ vector<double> times;
 void exc(Graph* data_graph, Graph** query_graph, int Worker_idx) {
     Worker worker(data_graph, query_graph, Worker_idx);
     worker.Excute(0, query_graph, data_graph);
-//    times.emplace_back(worker.this_time);
-    if (thread_num == 1) {
-        auto new_la = get_index_mem()["pk"];
-        size_t nei_all_size;
-        if (new_la > la) {
-            nei_all_size = worker.get_nei_label_vertex.size();
-            for (const auto &iii: worker.get_nei_label_vertex) {
-                nei_all_size += iii.second.size();
-                for (const auto &jii: iii.second) {
-                    nei_all_size += jii.second.size();
-                }
-            }
-            max_size = nei_all_size;
-            la = new_la;
-        }
-    }
 }
-int add(int vertex, size_t lower_) {
-    fstream fss = fstream("/home/dbia/qsl/FINISHED/PSM/" + PATH +"D" + to_string(D) + "/" + to_string(vertex) + ".txt");
-//    pair<int, vector<pair<int, vector<int>>>> nodes;
-//    nodes.first = vertex;
-    vertex = -1;
-    string line;
-    int cnt_ = 0;
-    while (fss >> vertex) {
-        int idx_ = -1, lab_ = -1, num_ = -1, x;
-        fss >> idx_ >> lab_ >> num_;
 
-        if (all_lab.find(lab_) == all_lab.end()) {
-            while (fss >> vertex)
-                if (vertex == -1)
-                    break;
-            continue;
-        }
-//        nodes.second.resize(nodes.second.size() + 1);
-//        nodes.second.back().first = lab_;
-//        nodes.second.back().second.reserve(num_);
-        for (int i = 0; i < num_; ++i) {
-            fss >> x;
-            cnt_++;
-//            nodes.second.back().second.emplace_back(x);
-        }
-        fss >> vertex;
-    }
-    fss.close();
-
-    return cnt_;
-}
 void bfs_init_solve(double total_time_in_ns, vector<vector<int>>& all_match_res, Graph** query_graph, Graph* data_graph) {
-    auto sstart = std::chrono::high_resolution_clock::now();
+    auto sstart2 = std::chrono::high_resolution_clock::now();
     std::cout << "Begin SP Match!" << std::endl;
-    top /= thread_num;
-    cout << "PATH: " << PATH << " Query_Num: " << QUERY_NUMS << " D: " << D << " Meth: bfs_init " << thread_num << " top " << top << dl;
+//    top /= thread_num;
 
     thread_num = min(thread_num, (int)all_match_res.size());
+    cout << "PATH: " << PATH << " Query_Num: " << QUERY_NUMS << " D: " << D << " Meth: bfs_init " << thread_num << " top " << top << dl;
+
     // thread_res.resize((int)all_match_res.size());
 //    new_idx.resize(all_match_res.size());
 //    for (int i = 0; i < all_match_res.size(); ++i) {
@@ -1230,9 +1147,7 @@ void bfs_init_solve(double total_time_in_ns, vector<vector<int>>& all_match_res,
 //        return a.first > b.first;
 //    });
     std::vector<std::thread> threads;
-    thread_state.reserve(thread_num);
-    thread2idx.resize(thread_num);
-    all_match_idx = 0;
+
     for (int i = 0; i < thread_num; ++i) {
         threads.emplace_back(exc, data_graph, query_graph, i);
     }
@@ -1243,7 +1158,7 @@ void bfs_init_solve(double total_time_in_ns, vector<vector<int>>& all_match_res,
 //        cout << i << " " << thread2idx[i].size() << endl;
 //    }
     auto eend = std::chrono::high_resolution_clock::now();
-    double ALL_TIME = std::chrono::duration_cast<std::chrono::nanoseconds>(eend - sstart).count();
+    double ALL_TIME = std::chrono::duration_cast<std::chrono::nanoseconds>(eend - sstart2).count();
     sum_memory_cost_in_bytes += sizeof (bool)* data_graph->vertices_count_;
     printf("Load graphs time (seconds): %.4lf\n", NANOSECTOSEC(total_time_in_ns));
     // printf("Memory cost (MB): %.4lf, %.4lf\n", BYTESTOMB(all_memory + sum_memory_cost_in_bytes + init_memory_cost_in_bytes), BYTESTOMB(init_memory_cost_in_bytes));
@@ -1269,150 +1184,6 @@ void bfs_init_solve(double total_time_in_ns, vector<vector<int>>& all_match_res,
     fin.close();
 }
 
-// void Init(Graph* data_graph, string pat, int l, int r) {
-//     vector<bool> cst5(data_graph->vertices_count_, false);
-//     vector<int> gdist(data_graph->vertices_count_, 0);
-//     assert(l < data_graph->vertices_count_);
-//     assert(r <= data_graph->vertices_count_);
-//     for (int u = l; u < r; ++u) {
-//         fill(cst5.begin(), cst5.end(), 0);
-//         fill(gdist.begin(), gdist.end(), 0);
-//
-//         get_nei_label_vertex[u][data_graph->getVertexLabel(u)].emplace_back(u);
-//
-//         queue<int> q;
-//         q.push(u);
-//         while (!q.empty()) {
-//             auto ver = q.front(); q.pop();
-//             if (cst5[ver] || gdist[ver] >= D) {
-//                 continue;
-//             }
-//             cst5[ver] = true;
-//             ui nbrs_cnt;
-//             const VertexID *nbrs = data_graph->getVertexNeighbors(ver, nbrs_cnt); // 获取点vertex的邻居
-//             for (int j = 0; j < nbrs_cnt; ++j) { // 遍历点vertex的邻居
-//                 int v = nbrs[j];
-//                 int lb = data_graph->getVertexLabel(v);
-//                 if (!cst5[v]) {
-//                     if (gdist[ver] + 1 <= D)
-//                     q.push(v);
-//                     if (gdist[v] == 0) {
-//                         get_nei_label_vertex[u][lb].emplace_back(v);
-// //                        cout << v << endl;
-//                         gdist[v] = gdist[ver] + 1;
-//                     }
-//                 }
-//             }
-//         }
-//         fstream fin2 = fstream(pat + to_string(u)+".txt", ios::out);
-//         int j_ = 0;
-//         for (const auto& j : get_nei_label_vertex[u]) {
-//             fin2 << u << " " << j_++ << " ";
-//             fin2 << j.first << " " << j.second.size() << " ";
-//             for (auto k: j.second) {
-//                 fin2 << k << " ";
-//             }
-//             fin2 << -1 << endl;
-//         }
-//         fin2.close();
-//         get_nei_label_vertex[u].clear();
-//     }
-//     char path_[50] = "ls /home/qsl/CL";
-//     strcat(path_, to_string(D).c_str());
-//     char path_end[10] = "/ | wc -w";
-//     strcat(path_, path_end);
-//     system(path_);
-// //    cout << l << " " << r << " finish" << endl;
-// }
-// void WR(Graph* data_graph, string pat, bool f) {
-//     get_nei_label_vertex.resize(data_graph->vertices_count_);
-//     for (int i = 0; i < data_graph->vertices_count_; i += data_graph->vertices_count_ / 10) {
-//         vector<thread> thrd;
-//         int thrd_num = 32;
-//         int l = 0, r = data_graph->vertices_count_ / 10 / 32;
-//         for (int j = 0; j < thrd_num; ++j) {
-//             thrd.emplace_back(Init, data_graph, pat, i + l, i + l + r);
-//             l += r;
-//         }
-//         for (std::thread& t : thrd) {
-//             t.join();
-//         }
-//         cout << i << " " << i + l << " finish " << getTime() << endl;
-//     }
-// //    Init(data_graph, pat, 0, data_graph->vertices_count_);
-//
-//     // if (f) {
-//     //     for (int i = 0; i < data_graph->vertices_count_; ++i) {
-//     //         fstream fin2 = fstream(pat + to_string(i)+".txt", ios::out);
-//     //         for (int j_ = 0; j_ < get_nei_label_vertex[i].second.size(); ++j_) {
-//     //             auto j = get_nei_label_vertex[i].second[j_];
-//     //             fin2 << i << " " << j_ << " ";
-//     //             fin2 << j.first << " " << j.second.size() << " ";
-//     //             for (auto k: j.second) {
-//     //                 fin2 << k << " ";
-//     //             }
-//     //             fin2 << -1 << endl;
-//     //         }
-//     //         fin2.close();
-//     //     }
-//     // }
-// }
-// void RD(Graph* data_graph, string pat) {
-//     cout << "RD" << endl;
-//     fstream file = fstream(pat, ios::in);
-//     std::string line;
-//     int la = -1;
-//     char type;
-//     bool ps = false;
-//     get_nei_label_vertex.resize(1);
-//     while (std::getline(file, line)) { // 逐行读取文件内容
-// //        std::cout << line << std::endl; // 输出读取的行
-//         int id = -1, lb = -1, ix = -1, ct = -1, nm = -1;
-//         int x = 0;
-//         for (int i = 0; i < line.size(); ++i) {
-//             if (line[i] == ' ' || line[i] == '\n') {
-//                 if (id == -1) {
-//                     if (la != x && la != -1) {
-//                         if (get_nei_label_vertex.back().second.size() != 0)
-//                             get_nei_label_vertex.resize(get_nei_label_vertex.size() + 1);
-//                     }
-//                     id = x;
-//                     la = x;
-//                     x = 0;
-//                 }
-//                 else if (ix == -1) {
-//                     ix = x;
-//                     x = 0;
-//                 }
-//                 else if (nm == -1 && ix == 0) {
-//                     nm = x;
-//                     get_nei_label_vertex.back().first = id;
-//                     x = 0;
-//                 }
-//                 else if (lb == -1) {
-//                     lb = x;
-//                     if (all_lab.find(lb) == all_lab.end()) break;
-//                     x = 0;
-//                     get_nei_label_vertex.back().second.resize(get_nei_label_vertex.back().second.size() + 1);
-//                     get_nei_label_vertex.back().second.back().first = lb;
-//                 }
-//                 else if (ct == -1) {
-//                     ct = x;
-//                     get_nei_label_vertex.back().second.back().second.reserve(ct);
-//                     x = 0;
-//                 }
-//                 else {
-//                     get_nei_label_vertex.back().second.back().second.emplace_back(x);
-//                     x = 0;
-//                 }
-//             }
-//             else {
-//                 x = x * 10 + line[i] - '0';
-//             }
-//         }
-//     }
-//     file.close();
-// }
 
 int main(int argc, char** argv) {
     cout << getTime() << endl;
@@ -1421,14 +1192,14 @@ int main(int argc, char** argv) {
     // memory.emplace_back(mp["pk"]);
     test = false;
     // la = get_index_mem()["pk"];
-//    QUE = "1";
-//    PATH = "MSRC-21C";
-//    D = 3;
+//    QUE = "10";
+//    PATH = "CL";
+//    D = 1;
 //    QUERY_NUMS = 3;
 //    Meth = 2;
 //    input_query_graph_file = "../../../test/querys/" + QUE;
 //    input_data_graph_file = "../../../test/graphs/Dataset/" + PATH + "/" + PATH + ".txt";
-//    thread_num = 1;
+//    thread_num = 8;
     MatchingCommand command(argc, argv);
     QUE = command.getQueryGraphFilePath();
     PATH = command.getDataGraphFilePath();
@@ -1457,8 +1228,6 @@ int main(int argc, char** argv) {
     std::cout << "\tDistribution File Path: " << input_distribution_file_path << std::endl;
     std::cout << "\tL: " << LL << " R: " << RR << std::endl;
     std::cout << "--------------------------------------------------------------------" << std::endl;
-
-
 
     /**
      * Load input graphs.
@@ -1672,10 +1441,28 @@ int main(int argc, char** argv) {
     sum_embedding_count += embedding_count;
     sum_call_count += call_count;
     printf("#Embeddings: %zu\n", embedding_count);
-
+    sort(all_match_res.begin(), all_match_res.end());
     std::cout << "query_graph match result:" << std::endl;
-    cout << all_match_res.size() << endl;
     std::cout << "--------------------------------------------------------------------" << std::endl;
+
+    to_match_idx.resize(all_match_res.size());
+    for (int i = 0; i < all_match_res.size(); ++i) {
+        to_match_idx[i].first = 0;
+        to_match_idx[i].second = i;
+        for (auto v : all_match_res[i]) {
+//            auto p = data_graph->getVertexNLF(v);
+//            if (p.f)
+            to_match_idx[i].first += data_graph->getVertexDegree(v);
+        }
+    }
+    if (thread_num == 1)
+        sort(to_match_idx.begin(), to_match_idx.end(), [](pair<int, int>& a, pair<int, int>& b){
+            return a.first > b.first;
+        });
+    else
+        sort(to_match_idx.begin(), to_match_idx.end(), [](pair<int, int>& a, pair<int, int>& b){
+            return a.first < b.first;
+        });
 //    cout << "Matchs: " << endl;
 //    for (auto i : all_match_res) {
 //        for (auto j : i) {
